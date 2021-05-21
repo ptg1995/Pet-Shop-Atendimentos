@@ -1,8 +1,7 @@
 const express = require('express');
+const consign = require('consign');
+
 const app = express();
 
-app.get('/atendimentos', (req, res) => {
-    return res.send('Voce está na rota de atendimentos /GET');
-})
 
 app.listen(3000, ()=>console.log('Servidor na porta 3000'));
