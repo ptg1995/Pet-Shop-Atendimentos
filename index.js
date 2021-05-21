@@ -3,5 +3,4 @@ const consign = require('consign');
 
 const app = express();
 
-
-app.listen(3000, ()=>console.log('Servidor na porta 3000'));
+consign().include('controllers').into(app)
