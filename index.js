@@ -7,7 +7,7 @@ conexao.connect((err) => {
     if(!err){
         Tabelas.init(conexao);
         Tabelas.CriarAtendimentos();
-        console.log('conectado ao banco de dados com  sucesso!')
+        console.log('Conectado ao banco de dados com  sucesso!')
     }
     else{
         console.log(err);

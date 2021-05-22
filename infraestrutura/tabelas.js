@@ -3,16 +3,21 @@ class Tabelas{
         this.conexao = conexao;
     }
     CriarAtendimentos(){
-        const tabelaExists = ()=>{
-            let sql = (`select *  from 'public'.'atendimentos'`);
-            if(sql){ 
+        const tabelaDoesExists = (err)=>{
+            let sql = (`select * from 'public'.'atendimentos'`);
+            if(err){ 
                 return true;
             }
         }
-        if(!tabelaExists){
-            let sql = (`CREATE TABLE atendimentos (idc_registro integer NOT NULL DEFAULT nextval('res_estufa_idc_registro_seq'::regclass),`
-                .concat('cliente VARCHAR(50) NOT NULL, pet varchar(20), servico varchar(20) NOT NULL, status varchar(20) NOT NULL,')
-                .concat('observacoes varchar(500), PRIMARY KEY(idc_registro))'))
+        if(tabelaDoesExists){
+            let sql = (`CREATE TABLE atendimentos (`)
+                .concat(`idc_registro integer NOT NULL DEFAULT nextval('res_estufa_idc_registro_seq'::regclass),`)
+                .concat('cliente VARCHAR(50) NOT NULL,')
+                .concat('pet varchar(20),')
+                .concat('servico varchar(20) NOT NULL, ')
+                .concat('status varchar(20) NOT NULL,')
+                .concat('observacoes varchar(500),')
+                .concat(' PRIMARY KEY(idc_registro))');
             this.conexao.query(sql, (err)=>{
                 if(err){
                     console.log(err);
