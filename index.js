@@ -1,12 +1,12 @@
 const customExpress = require('./config/customExpress');
 const conexao = require('./infraestrutura/conexao');
-const Tabelas = require('./infraestrutura/tabelas')
+const tabelas = require('./infraestrutura/tabelas')
 const  app = customExpress();
 
 conexao.connect((err) => {
     if(!err){
-        Tabelas.init(conexao);
-        Tabelas.CriarAtendimentos();
+        tabelas.init(conexao);
+        tabelas.CriarTabelaAtendimentos();
         console.log('Conectado ao banco de dados com  sucesso!')
     }
     else{

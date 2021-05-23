@@ -2,7 +2,7 @@ class Tabelas{
     init(conexao){
         this.conexao = conexao;
     }
-    CriarAtendimentos(){
+    CriarTabelaAtendimentos(){
         const tabelaDoesExists = (err)=>{
             let sql = (`select * from 'public'.'atendimentos'`);
             if(err){ 
@@ -17,10 +17,12 @@ class Tabelas{
                 .concat('servico varchar(20) NOT NULL, ')
                 .concat('status varchar(20) NOT NULL,')
                 .concat('observacoes varchar(500),')
+                .concat('dth_consulta timestamp,')
+                .concat('dth_marcacao timestamp ,')
                 .concat(' PRIMARY KEY(idc_registro))');
             this.conexao.query(sql, (err)=>{
                 if(err){
-                    console.log(err);
+                    console.log("Tabela Atendimentos já existe!");
                 }
                 else {
                     console.log('Tabela atendimentos criada com sucesso')
