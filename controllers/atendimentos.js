@@ -9,7 +9,12 @@ module.exports = app => {
         dac.SelectConsultasByName(req.params['cliente'],res);
     })
     app.post('/atendimentos', (req, res) => {
-        console.log(req.body)
         dac.InsertAtendimentos(req.body, res);
     });
+    app.patch('/atendimentos/:cliente', (req, res)=>{
+        dac.UpDateByName(req.params['cliente'],req.body,res)
+    });
+    app.delete('/atendimentos/:cliente', (req,res)=>{
+        dac.DeleteByName(req.params['cliente'], res)
+    })
 }

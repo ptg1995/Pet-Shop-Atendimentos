@@ -5,8 +5,8 @@ const { response } = require('express');
 class Atendimento{
     InsertAtendimentos(atendimento, res){
         const dataCriacao = new Date();
-        const dataCriacaoFormat = moment(dataCriacao.getTime()).format('YYYY-MM-DD HH24:mm:ss')
-        const  dataAtendimentoFormat = moment(atendimento.dataAtendimento, 'DD-MM-YYYY HH24:mm:ss').format('YYYY-MM-DD HH24:mm:ss')
+        const dataCriacaoFormat = moment(dataCriacao.getTime()).format('YYYY-MM-DD HH:mm:ss')
+        const  dataAtendimentoFormat = moment(atendimento.dataAtendimento, 'DD-MM-YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
         //valida data do atendimento
         if(dataAtendimentoFormat<= dataCriacaoFormat ){
             return res.status(400).send('A data da consulta deve ser maior que a data atual.')
@@ -24,7 +24,7 @@ class Atendimento{
                 res.status(400).json(err)
             }
             else{
-                res.status(201).json(content);
+                res.status(201).json({...atendimento});
             }
         });
     };
@@ -51,17 +51,31 @@ class Atendimento{
             }
         });
     };
-    UpDateByName(name, res){
-        const sql = (`Select cliente, pet, servico, observacoes, to_char(dth_consulta, 'YYYY-MM-DD HH24:mm:ss') as dth_consulta, to_char(dth_marcacao, 'YYYY-MM-DD HH24:mm:ss') as dth_marcacao from public.atendimentos WHERE cliente = '${cliente}'`) // or pet = '${req.params.pet}' or  dth_consulta = ${req.params.dataAtendimento}`)    
+    UpDateByName(cliente, valores, res){
+        const dataCriacao = new Date();
+        const dataCriacaoFormat = moment(dataCriacao.getTime()).format('YYYY-MM-DD HH:mm:ss');
+        const  dataAtendimentoFormat = moment(valores.dataAtendimento, 'DD-MM-YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
+        console.log(dataCriacaoFormat)
+        const sql = (`UPDATE public.atendimentos SET cliente='${cliente}', pet='${valores.pet}', servico='${valores.servico}', status='${valores.status}', observacoes='${valores.observacoes}', dth_consulta='${dataAtendimentoFormat}', dth_marcacao='${dataCriacaoFormat}' WHERE cliente = '${cliente}'`)    
         conexao.query(sql,(err, content) =>{ 
             if(err) {
-                res.status(400).json(err)
+                res.status(400).json(err);
             }
             else{
-                res.status(201).json(content.rows[0]);
+                res.status(201).json({...valores, cliente});
             }
         });
     }
-
+    DeleteByName(cliente, res){
+        const sql = (`DELETE FROM public.atendimentos WHERE cliente='${cliente}'`)    
+        conexao.query(sql,(err, content) =>{ 
+            if(err) {
+                res.status(400).json(err);
+            }
+            else{
+                res.status(200).send(`Consulta do(a) cliente ${cliente} foi desmarcada!`);
+            }
+        });
+    }
 }
 module.exports = Atendimento;
